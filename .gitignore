@@ -2,6 +2,7 @@
 bin/
 /grokforge
 *.exe
+dist/
 
 # PRD tracking (internal)
 PRD_Tracking/
@@ -58,6 +59,7 @@ tmp/
 
 # Logs
 logs/
+run/
 
 # AI Assistant configs
 .opencode/

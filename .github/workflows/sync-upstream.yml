@@ -1,0 +1,57 @@
+name: Sync Upstream
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream
+        run: |
+          git remote remove upstream 2>/dev/null || true
+          git remote add upstream https://github.com/crmmc/grokforge.git
+
+      - name: Fetch upstream
+        run: |
+          git fetch origin --tags
+          git fetch upstream main --tags
+
+      - name: Merge upstream main
+        run: |
+          git checkout main
+          git merge --no-edit upstream/main
+
+      - name: Push merged main
+        run: git push origin main
+
+      - name: Sync latest upstream tag
+        run: |
+          latest_tag="$(git tag --merged upstream/main --list 'v*' --sort=-version:refname | head -n 1)"
+          if [ -z "${latest_tag}" ]; then
+            echo "No upstream release tag found"
+            exit 0
+          fi
+
+          if git ls-remote --exit-code --tags origin "refs/tags/${latest_tag}" >/dev/null 2>&1; then
+            echo "Tag ${latest_tag} already exists on origin"
+            exit 0
+          fi
+
+          git tag -a "${latest_tag}" -m "Sync upstream release ${latest_tag}"
+          git push origin "${latest_tag}"
