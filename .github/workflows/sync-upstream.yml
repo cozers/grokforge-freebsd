@@ -53,5 +53,5 @@ jobs:
             exit 0
           fi
 
-          git tag -a "${latest_tag}" -m "Sync upstream release ${latest_tag}"
+          git tag -a "${latest_tag}" -m "FreeBSD release for upstream ${latest_tag}" HEAD
           git push origin "${latest_tag}"
