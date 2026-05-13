@@ -53,5 +53,7 @@ jobs:
             exit 0
           fi
 
-          git tag -a "${latest_tag}" -m "FreeBSD release for upstream ${latest_tag}" HEAD
-          git push origin "${latest_tag}"
+          # `git fetch --tags` brings upstream tags into the local clone, so recreate
+          # the matching tag on the fork's HEAD before pushing it to origin.
+          git tag -fa "${latest_tag}" -m "FreeBSD release for upstream ${latest_tag}" HEAD
+          git push origin "refs/tags/${latest_tag}"
