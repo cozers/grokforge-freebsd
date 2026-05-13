@@ -1,6 +1,6 @@
 module github.com/crmmc/grokforge
 
-go 1.25.9
+go 1.25.10
 
 require (
 	github.com/BurntSushi/toml v1.4.0
@@ -13,7 +13,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/tiktoken-go/tokenizer v0.7.0
 	golang.org/x/image v0.36.0
-	golang.org/x/net v0.48.0
+	golang.org/x/net v0.53.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.30.0
